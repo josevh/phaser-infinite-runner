@@ -1,6 +1,8 @@
 var hero;
 var ground;
+var grass;
 var crates;
+var crate;
 
 var spriteScale;
 
@@ -29,23 +31,20 @@ var level1State = {
             'ground');
         hero = game.add.sprite(w / 2 - spriteScale * 16 / 2, game.world.height - (2 * spriteScale * 16), 'hero');
 
-        grass.tileScale.y = spriteScale;
-        grass.tileScale.x = spriteScale;
-        
-        
-
         crates = this.game.add.group();
         crates.enableBody = true;
         crates.createMultiple(12, 'crate');
         crates.setAll('checkWorldBounds', true);
         crates.setAll('outOfBoundsKill', true);
         
-        var crate = crates.getFirstExists(false);
-        crate.scale.setTo(spriteScale, spriteScale);2
+        crate = crates.getFirstExists(false);
+        crate.scale.setTo(spriteScale, spriteScale);
         crate.reset(w - spriteScale * 12, game.world.height - (spriteScale * 16) - (12 * spriteScale));
         
-        
         game.physics.enable([ground, hero, crate], Phaser.Physics.ARCADE);
+        
+        grass.tileScale.y = spriteScale;
+        grass.tileScale.x = spriteScale;
 
         ground.body.immovable = true;
         ground.body.allowGravity = false;
@@ -72,9 +71,13 @@ var level1State = {
 
     update: function() {
         game.physics.arcade.collide(ground, hero);
-        game.physics.arcade.collide(crates, hero);
+        game.physics.arcade.collide(crate, hero, function(){
+            console.log('coll!');
+        }, null, this);
         ground.tilePosition.x -= 2;
         grass.tilePosition.x -= 1;
+        
+        crate.x -= 4;
         //grass.frame = Math.floor(Math.random() * 2); 
 
         // if (cursors.left.isDown) { }
@@ -82,7 +85,7 @@ var level1State = {
         if (spaceKey.isDown ||
             (swipe.isDown && (swipe.positionDown.y > swipe.position.y))) {
             if (hero.body.touching.down) {
-                hero.body.velocity.y = -300;
+                hero.body.velocity.y = -350;
             }
         }
         // else if (cursors.down.isDown) { }
