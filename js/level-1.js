@@ -1,6 +1,7 @@
 var hero;
 var ground;
 var crates;
+
 var spriteScale;
 
 var spaceKey;
@@ -9,16 +10,13 @@ var swipe;
 /* global game */
 
 var level1State = {
-    
-    // preload: function() {
-    // },
 
     create: function() {
         spriteScale = 4;
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
         //game.physics.arcade.gravity.y = 600;
-        game.world.setBounds(0, 0, 3500, game.height);
+        game.world.setBounds(0, 0, w + 64, game.height);
         game.stage.backgroundColor = '#3598db';
 
         grass = game.add.tileSprite(
@@ -47,7 +45,7 @@ var level1State = {
 
         hero.animations.add('run', [6, 7, 8, 9, 10, 11], 20, true);
         hero.animations.play('run');
-        
+
         crates = this.game.add.group();
         crates.enableBody = true;
         crates.createMultiple(12, 'crate');
@@ -60,7 +58,7 @@ var level1State = {
         //  Stop the following keys from propagating up to the browser
         game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
         swipe = game.input.activePointer;
-        
+
         this.generatePath();
     },
 
@@ -88,6 +86,6 @@ var level1State = {
         // game.debug.body(ground);
     },
     generatePath: function() {
-        
+
     }
 };
