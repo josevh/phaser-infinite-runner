@@ -29,10 +29,23 @@ var level1State = {
             'ground');
         hero = game.add.sprite(w / 2 - spriteScale * 16 / 2, game.world.height - (2 * spriteScale * 16), 'hero');
 
-        game.physics.enable([ground, hero], Phaser.Physics.ARCADE);
-
         grass.tileScale.y = spriteScale;
         grass.tileScale.x = spriteScale;
+        
+        
+
+        crates = this.game.add.group();
+        crates.enableBody = true;
+        crates.createMultiple(12, 'crate');
+        crates.setAll('checkWorldBounds', true);
+        crates.setAll('outOfBoundsKill', true);
+        
+        var crate = crates.getFirstExists(false);
+        crate.scale.setTo(spriteScale, spriteScale);2
+        crate.reset(w - spriteScale * 12, game.world.height - (spriteScale * 16) - (12 * spriteScale));
+        
+        
+        game.physics.enable([ground, hero, crate], Phaser.Physics.ARCADE);
 
         ground.body.immovable = true;
         ground.body.allowGravity = false;
@@ -45,12 +58,7 @@ var level1State = {
 
         hero.animations.add('run', [6, 7, 8, 9, 10, 11], 20, true);
         hero.animations.play('run');
-
-        crates = this.game.add.group();
-        crates.enableBody = true;
-        crates.createMultiple(12, 'crate');
-        crates.setAll('checkWorldBounds', true);
-        crates.setAll('outOfBoundsKill', true);
+        
 
         //  Register the keys.
         spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -75,7 +83,6 @@ var level1State = {
             (swipe.isDown && (swipe.positionDown.y > swipe.position.y))) {
             if (hero.body.touching.down) {
                 hero.body.velocity.y = -300;
-
             }
         }
         // else if (cursors.down.isDown) { }
