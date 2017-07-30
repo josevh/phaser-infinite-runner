@@ -1,5 +1,6 @@
 var hero;
 var ground;
+var crates;
 var spriteScale;
 
 var spaceKey;
@@ -8,20 +9,15 @@ var swipe;
 /* global game */
 
 var level1State = {
-
-    preload: function() {
-        game.load.spritesheet('hero', './assets/sprites/hero-16x16.png', 16, 16, 27);
-        game.load.spritesheet('ground', './assets/sprites/ground_1-16x16.png', 16, 16, 1);
-        game.load.spritesheet('grass', './assets/sprites/grass-16x16.png', 32, 16, 2);
-        game.stage.smoothed = false; // scale up, reduce blur
-    },
+    
+    // preload: function() {
+    // },
 
     create: function() {
         spriteScale = 4;
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
         //game.physics.arcade.gravity.y = 600;
-
         game.world.setBounds(0, 0, 3500, game.height);
         game.stage.backgroundColor = '#3598db';
 
@@ -29,8 +25,6 @@ var level1State = {
             0, game.world.height - (2 * spriteScale * 16),
             w, spriteScale * 16,
             'grass');
-
-
         ground = game.add.tileSprite(
             0, game.world.height - (spriteScale * 16),
             w, spriteScale * 16,
@@ -53,6 +47,12 @@ var level1State = {
 
         hero.animations.add('run', [6, 7, 8, 9, 10, 11], 20, true);
         hero.animations.play('run');
+        
+        crates = this.game.add.group();
+        crates.enableBody = true;
+        crates.createMultiple(12, 'crate');
+        crates.setAll('checkWorldBounds', true);
+        crates.setAll('outOfBoundsKill', true);
 
         //  Register the keys.
         spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -60,10 +60,13 @@ var level1State = {
         //  Stop the following keys from propagating up to the browser
         game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
         swipe = game.input.activePointer;
+        
+        this.generatePath();
     },
 
     update: function() {
         game.physics.arcade.collide(ground, hero);
+        game.physics.arcade.collide(crates, hero);
         ground.tilePosition.x -= 2;
         grass.tilePosition.x -= 1;
         //grass.frame = Math.floor(Math.random() * 2); 
@@ -83,5 +86,8 @@ var level1State = {
     render: function() {
         // game.debug.body(hero);
         // game.debug.body(ground);
+    },
+    generatePath: function() {
+        
     }
 };
