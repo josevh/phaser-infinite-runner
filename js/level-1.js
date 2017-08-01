@@ -28,6 +28,7 @@ var level1State = {
             align: "center"
         });
         gameOverText.visible = false;
+        gameOverText.anchor.setTo(0.5, 0.5);
 
         counterText = game.add.text(0, 0, 'Counter: 0', {
             font: "48px Arial",
@@ -47,7 +48,7 @@ var level1State = {
             0, game.world.height - (spriteScale * 16),
             w, spriteScale * 16,
             'ground');
-        hero = game.add.sprite(w / 2 - spriteScale * 16 / 2, game.world.height - (2 * spriteScale * 16), 'hero');
+        hero = game.add.sprite(spriteScale * 16 * 2, game.world.height - (2 * spriteScale * 16), 'hero');
 
         crates = this.game.add.group();
         crates.enableBody = true;
