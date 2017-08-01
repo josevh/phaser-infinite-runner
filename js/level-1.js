@@ -9,8 +9,9 @@ var spriteScale;
 var spaceKey;
 var swipe;
 
-var counter = 0;
-var counterText = 0;
+var counter;
+var counterText;
+var gameOverText;
 
 /* global game */
 
@@ -18,8 +19,21 @@ var level1State = {
 
     create: function() {
         spriteScale = 4;
-        
-        counterText = game.add.text(0, 0, 'Counter: 0', { font: "48px Arial", fill: "#ffffff", align: "left" });
+        counter = 0;
+        counterText = 0;
+
+        gameOverText = game.add.text(game.world.centerX, game.world.centerY, 'Game Over', {
+            font: "64px Arial",
+            fill: "#ffffff",
+            align: "center"
+        });
+        gameOverText.visible = false;
+
+        counterText = game.add.text(0, 0, 'Counter: 0', {
+            font: "48px Arial",
+            fill: "#ffffff",
+            align: "left"
+        });
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.world.setBounds(0, 0, w + 64, game.height);
@@ -38,9 +52,9 @@ var level1State = {
         crates = this.game.add.group();
         crates.enableBody = true;
         crates.createMultiple(12, 'crate');
-        
+
         game.physics.enable([ground, hero], Phaser.Physics.ARCADE);
-        
+
         grass.tileScale.y = spriteScale;
         grass.tileScale.x = spriteScale;
 
@@ -55,7 +69,7 @@ var level1State = {
 
         hero.animations.add('run', [6, 7, 8, 9, 10, 11], 20, true);
         hero.animations.play('run');
-        
+
 
         //  Register the keys.
         spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -70,12 +84,10 @@ var level1State = {
 
     update: function() {
         game.physics.arcade.collide(ground, hero);
-        game.physics.arcade.collide(crate, hero, function(){
-            console.log('coll!');
-        }, null, this);
+        game.physics.arcade.collide(crate, hero, this.playerHit, null, this);
         ground.tilePosition.x -= 2;
         grass.tilePosition.x -= 1;
-        
+
         // if (cursors.left.isDown) { }
         // else if (cursors.right.isDown) { }
         if (spaceKey.isDown ||
@@ -101,12 +113,18 @@ var level1State = {
         crate.body.kinematic = true;
         crate.checkWorldBounds = true;
         crate.outOfBoundsKill = true;
-        
+
         game.time.events.add(game.rnd.integerInRange(150, 3000), this.placeCrate, this);
+    },
+    playerHit: function() {
+        this.gameOver();
     },
     updateCounter: function() {
         counter++;
-
         counterText.setText('Counter: ' + counter);
+    },
+    gameOver: function() {
+        gameOverText.visible = true;
+        game.paused = true;
     }
 };
