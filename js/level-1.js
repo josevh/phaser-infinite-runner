@@ -17,7 +17,6 @@ var level1State = {
         spriteScale = 4;
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        //game.physics.arcade.gravity.y = 600;
         game.world.setBounds(0, 0, w + 64, game.height);
         game.stage.backgroundColor = '#3598db';
 
@@ -34,14 +33,8 @@ var level1State = {
         crates = this.game.add.group();
         crates.enableBody = true;
         crates.createMultiple(12, 'crate');
-        crates.setAll('checkWorldBounds', true);
-        crates.setAll('outOfBoundsKill', true);
         
-        crate = crates.getFirstExists(false);
-        crate.scale.setTo(spriteScale, spriteScale);
-        crate.reset(w - spriteScale * 12, game.world.height - (spriteScale * 16) - (12 * spriteScale));
-        
-        game.physics.enable([ground, hero, crate], Phaser.Physics.ARCADE);
+        game.physics.enable([ground, hero], Phaser.Physics.ARCADE);
         
         grass.tileScale.y = spriteScale;
         grass.tileScale.x = spriteScale;
@@ -66,7 +59,7 @@ var level1State = {
         game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
         swipe = game.input.activePointer;
 
-        this.generatePath();
+        this.placeCrate();
     },
 
     update: function() {
@@ -77,9 +70,6 @@ var level1State = {
         ground.tilePosition.x -= 2;
         grass.tilePosition.x -= 1;
         
-        crate.x -= 4;
-        //grass.frame = Math.floor(Math.random() * 2); 
-
         // if (cursors.left.isDown) { }
         // else if (cursors.right.isDown) { }
         if (spaceKey.isDown ||
@@ -95,7 +85,17 @@ var level1State = {
         // game.debug.body(hero);
         // game.debug.body(ground);
     },
-    generatePath: function() {
-
+    placeCrate: function() {
+        crate = crates.getFirstExists(false);
+        crate.scale.setTo(spriteScale, spriteScale);
+        crate.reset(
+            w,
+            game.world.height - (spriteScale * 16) - (12 * spriteScale));
+        crate.body.velocity.x = -500;
+        crate.body.kinematic = true;
+        crate.checkWorldBounds = true;
+        crate.outOfBoundsKill = true;
+        
+        game.time.events.add(game.rnd.integerInRange(150, 3000), this.placeCrate, this);
     }
 };
