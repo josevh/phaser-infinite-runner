@@ -9,12 +9,17 @@ var spriteScale;
 var spaceKey;
 var swipe;
 
+var counter = 0;
+var counterText = 0;
+
 /* global game */
 
 var level1State = {
 
     create: function() {
         spriteScale = 4;
+        
+        counterText = game.add.text(0, 0, 'Counter: 0', { font: "48px Arial", fill: "#ffffff", align: "left" });
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.world.setBounds(0, 0, w + 64, game.height);
@@ -59,6 +64,7 @@ var level1State = {
         game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
         swipe = game.input.activePointer;
 
+        game.time.events.loop(Phaser.Timer.SECOND, this.updateCounter, game);
         this.placeCrate();
     },
 
@@ -97,5 +103,10 @@ var level1State = {
         crate.outOfBoundsKill = true;
         
         game.time.events.add(game.rnd.integerInRange(150, 3000), this.placeCrate, this);
+    },
+    updateCounter: function() {
+        counter++;
+
+        counterText.setText('Counter: ' + counter);
     }
 };
