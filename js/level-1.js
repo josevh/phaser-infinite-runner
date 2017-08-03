@@ -74,7 +74,7 @@ var level1State = {
 
         hero.body.collideWorldBounds = true;
         hero.scale.setTo(spriteScale, spriteScale);
-        hero.body.gravity.y = 600;
+        hero.body.gravity.y = 2000;
 
         hero.animations.add('run', [6, 7, 8, 9, 10, 11], 20, true);
         hero.animations.play('run');
@@ -104,7 +104,7 @@ var level1State = {
         if (spaceKey.isDown ||
             (swipe.isDown && (swipe.positionDown.y > swipe.position.y))) {
             if (hero.body.touching.down) {
-                hero.body.velocity.y = -350;
+                hero.body.velocity.y = -650;
             }
         }
         // else if (cursors.down.isDown) { }
