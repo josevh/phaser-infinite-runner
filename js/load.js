@@ -1,12 +1,13 @@
 WebFontConfig = {
-    active: function() {
-        game.time.events.add(Phaser.Timer.SECOND, createText, this);
-    },
+    // active: function() {
+    //     game.time.events.add(Phaser.Timer.SECOND, loadState.createText, this);
+    // },
     google: {
         families: ["VT323"]
     }
 }
 
+var bestScore;
 
 var loadState = {
 
@@ -19,7 +20,7 @@ var loadState = {
         In this case of loading, only text is placed...
         */
 
-        var loadingLabel = game.add.text(80, 150, 'loading...', {font: '30px Courier', fill: '#fff'});
+        var loadingLabel = game.add.text(80, 150, 'loading...', {font: '30px VT323', fill: '#fff'});
 
         //Load your images, spritesheets, bitmaps...
         game.load.image('boiler-logo', 'assets/img/boilerplate-logo.png');   
@@ -36,6 +37,8 @@ var loadState = {
         
         game.stage.smoothed = false; // scale up, reduce blur
 
+
+        bestScore = 0;
     },
 
     create: function () {

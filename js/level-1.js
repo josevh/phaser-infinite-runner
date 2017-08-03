@@ -11,16 +11,20 @@ var swipe;
 
 var counter;
 var counterText;
+var bestScoreText;
 var gameOverText;
 
 /* global game */
 
 var level1State = {
+    
+    preload: function() {
+        
+    },
 
     create: function() {
         spriteScale = 4;
         counter = 0;
-        counterText = 0;
 
         gameOverText = game.add.text(game.world.centerX, game.world.centerY, 'Game Over', {
             font: "64px VT323",
@@ -35,6 +39,14 @@ var level1State = {
             fill: "#ffffff",
             align: "left"
         });
+        
+        bestScoreText = game.add.text(0, counterText.height, 'Best: ' + bestScore, {
+            font: "48px VT323",
+            fill: "#ffffff",
+            align: "left"
+        });
+        console.log('best score: ' + bestScore);
+        bestScoreText.visible = bestScore > 0;
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.world.setBounds(0, 0, w + 64, game.height);
@@ -134,6 +146,9 @@ var level1State = {
         }
     },
     gameOver: function() {
+        if (counter > bestScore) {
+            bestScore = counter;
+        }
         gameOverText.visible = true;
         game.paused = true;
     }
