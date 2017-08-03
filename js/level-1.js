@@ -30,7 +30,7 @@ var level1State = {
         gameOverText.visible = false;
         gameOverText.anchor.setTo(0.5, 0.5);
 
-        counterText = game.add.text(0, 0, 'Counter: 0', {
+        counterText = game.add.text(0, 0, 'Time: 0', {
             font: "48px VT323",
             fill: "#ffffff",
             align: "left"
@@ -78,6 +78,8 @@ var level1State = {
         //  Stop the following keys from propagating up to the browser
         game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
         swipe = game.input.activePointer;
+        
+        spaceKey.onDown.add(this.unpause, this);
 
         game.time.events.loop(Phaser.Timer.SECOND, this.updateCounter, game);
         this.placeCrate();
@@ -121,9 +123,15 @@ var level1State = {
     playerHit: function() {
         this.gameOver();
     },
-    updateCounter: function() {
+    updateCounter: function() { 
         counter++;
-        counterText.setText('Counter: ' + counter);
+        counterText.setText('Time: ' + counter);
+    },
+    unpause: function() {
+        if (game.paused === true) {
+            game.state.start('level1');
+            game.paused = false;
+        }
     },
     gameOver: function() {
         gameOverText.visible = true;
