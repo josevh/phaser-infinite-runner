@@ -8,6 +8,7 @@ var spriteScale;
 
 var spaceKey;
 var swipe;
+var jumpCount;
 
 var counter;
 var counterText;
@@ -19,6 +20,7 @@ var gameOverText;
 var level1State = {
     
     create: function() {
+        jumpCount = 0;
         spriteScale = 4;
         counter = 0;
 
@@ -87,31 +89,35 @@ var level1State = {
         swipe = game.input.activePointer;
         
         spaceKey.onDown.add(this.unpause, this);
+        spaceKey.onDown.add(this.playerJump, this);
 
         game.time.events.loop(Phaser.Timer.SECOND, this.updateCounter, game);
         this.placeCrate();
     },
 
     update: function() {
-        game.physics.arcade.collide(ground, hero);
-        game.physics.arcade.collide(crate, hero, this.playerHit, null, this);
+        game.physics.arcade.collide(ground, hero, this.playerHitGround, null, this);
+        game.physics.arcade.collide(crate, hero, this.playerHitCrate, null, this);
         ground.tilePosition.x -= 2;
         grass.tilePosition.x -= 1;
 
         // if (cursors.left.isDown) { }
         // else if (cursors.right.isDown) { }
-        if (spaceKey.isDown ||
-            (swipe.isDown && (swipe.positionDown.y > swipe.position.y))) {
-            if (hero.body.touching.down) {
-                hero.body.velocity.y = -650;
-            }
-        }
+        // if (spaceKey.isDown ||
+        //     (swipe.isDown && (swipe.positionDown.y > swipe.position.y))) {
+        //     if (hero.body.touching.down || jumpCount < 2) {
+        //         console.log('jump!');
+        //         hero.body.velocity.y = -650;
+        //         jumpCount++;
+        //     }
+        // }
         // else if (cursors.down.isDown) { }
 
     },
     render: function() {
         // game.debug.body(hero);
         // game.debug.body(ground);
+        console.log(hero.body.velocity.y)
     },
     placeCrate: function() {
         crate = crates.getFirstExists(false);
@@ -127,8 +133,17 @@ var level1State = {
 
         game.time.events.add(game.rnd.integerInRange(150, 3000), this.placeCrate, this);
     },
-    playerHit: function() {
+    playerHitCrate: function() {
         this.gameOver();
+    },
+    playerHitGround: function() {
+        jumpCount = 0;
+    },
+    playerJump: function() {
+        if (jumpCount < 2) {
+            hero.body.velocity.y = -650;
+            jumpCount++;
+        }
     },
     updateCounter: function() { 
         counter++;
