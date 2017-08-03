@@ -110,8 +110,9 @@ var level1State = {
         crate.reset(
             w,
             game.world.height - (spriteScale * 16) - (12 * spriteScale));
-        crate.body.velocity.x = -500;
+        crate.body.velocity.x = -480;
         crate.body.kinematic = true;
+        crate.body.immovable = true;
         crate.checkWorldBounds = true;
         crate.outOfBoundsKill = true;
 
