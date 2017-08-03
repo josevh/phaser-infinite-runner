@@ -18,10 +18,6 @@ var gameOverText;
 
 var level1State = {
     
-    preload: function() {
-        
-    },
-
     create: function() {
         spriteScale = 4;
         counter = 0;
