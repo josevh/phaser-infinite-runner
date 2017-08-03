@@ -100,24 +100,10 @@ var level1State = {
         game.physics.arcade.collide(crate, hero, this.playerHitCrate, null, this);
         ground.tilePosition.x -= 2;
         grass.tilePosition.x -= 1;
-
-        // if (cursors.left.isDown) { }
-        // else if (cursors.right.isDown) { }
-        // if (spaceKey.isDown ||
-        //     (swipe.isDown && (swipe.positionDown.y > swipe.position.y))) {
-        //     if (hero.body.touching.down || jumpCount < 2) {
-        //         console.log('jump!');
-        //         hero.body.velocity.y = -650;
-        //         jumpCount++;
-        //     }
-        // }
-        // else if (cursors.down.isDown) { }
-
     },
     render: function() {
         // game.debug.body(hero);
         // game.debug.body(ground);
-        console.log(hero.body.velocity.y)
     },
     placeCrate: function() {
         crate = crates.getFirstExists(false);
