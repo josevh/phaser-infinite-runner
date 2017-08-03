@@ -41,7 +41,6 @@ var level1State = {
             fill: "#ffffff",
             align: "left"
         });
-        console.log('best score: ' + bestScore);
         bestScoreText.visible = bestScore > 0;
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
