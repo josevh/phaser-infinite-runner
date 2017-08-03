@@ -23,7 +23,7 @@ var level1State = {
         counterText = 0;
 
         gameOverText = game.add.text(game.world.centerX, game.world.centerY, 'Game Over', {
-            font: "64px Arial",
+            font: "64px VT323",
             fill: "#ffffff",
             align: "center"
         });
@@ -31,7 +31,7 @@ var level1State = {
         gameOverText.anchor.setTo(0.5, 0.5);
 
         counterText = game.add.text(0, 0, 'Counter: 0', {
-            font: "48px Arial",
+            font: "48px VT323",
             fill: "#ffffff",
             align: "left"
         });

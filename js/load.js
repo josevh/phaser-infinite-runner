@@ -1,6 +1,17 @@
+WebFontConfig = {
+    active: function() {
+        game.time.events.add(Phaser.Timer.SECOND, createText, this);
+    },
+    google: {
+        families: ["VT323"]
+    }
+}
+
+
 var loadState = {
 
     preload: function () {
+        game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
         /*
         Load all game assets
